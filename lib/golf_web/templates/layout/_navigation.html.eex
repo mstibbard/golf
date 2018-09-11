@@ -1,0 +1,17 @@
+<div class="bg-black-80 pb2 pb3-m pb2-l">
+  <nav class="dt w-100 mw8 center">
+      <a href="/" class="f1 fw4 hover-white no-underline white-70 dn dib-l pv2 ph3">
+        St George Ladies Golf Club
+      </a>
+    <div class="dtc v-mid tr pa2">
+      <%= if @conn.assigns[:user] do %>
+        <nav class="f4 fw4 white-70 pv2 ph3">
+          Welcome, <%= @conn.assigns.user.first_name %>!
+          <%= link "Sign out", to: auth_path(@conn, :delete), class: "fw4 hover-white no-underline white-70" %>
+        </nav>
+      <% else %>
+          <%= link "Sign in with Google", to: auth_path(@conn, :request, "google", scope: "email profile"), class: "f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" %>
+      <% end %>
+    </div>
+  </nav> 
+</div>

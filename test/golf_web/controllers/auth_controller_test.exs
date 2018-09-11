@@ -2,6 +2,7 @@ defmodule GolfWeb.AuthControllerTest do
   use GolfWeb.ConnCase
   alias Golf.Repo
   alias Golf.User
+  import Golf.Factory
 
   @ueberauth_auth %{credentials: %{token: "fsfDFsdgdsgdsfsd"},
                     info: %{
@@ -26,4 +27,14 @@ defmodule GolfWeb.AuthControllerTest do
     assert get_flash(conn, :info) == "Thank you for signing in!"
   end
 
+  test "signs out user", %{conn: conn} do
+    user = insert(:user)
+
+    conn = conn
+    |> assign(:user, user)
+    |> get("/auth/signout")
+    |> get("/")
+
+    assert conn.assigns.user == nil
+  end
 end

@@ -38,4 +38,10 @@ defmodule GolfWeb.AuthController do
       user   -> {:ok, user}
     end
   end
+
+  def delete(conn, _params) do
+    conn
+    |> configure_session(drop: true)
+    |> redirect(to: page_path(conn, :index))
+  end
 end

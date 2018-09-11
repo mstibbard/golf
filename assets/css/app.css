@@ -1,1 +1,24 @@
-/* This file is for your main application css. */
+.container {
+  display: grid;
+
+  grid-template-areas:
+    "header  header    header   header"
+    "nav     content   content  content"
+    "nav     content   content  content";
+
+  grid-template-columns: 200px 1fr 200px 200px;
+  grid-template-rows: auto 1fr auto auto;
+  grid-gap: 10px;
+
+  height: 100vh;
+}
+header {
+  grid-area: header;
+}
+nav {
+  grid-area: nav;
+  margin-left: 0.5rem;
+}
+main {
+  grid-area: content;
+}
