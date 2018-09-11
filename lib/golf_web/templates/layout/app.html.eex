@@ -15,14 +15,16 @@
   <body>
     <div class="container">
       <header>
-        <%= render "_navigation.html", conn: @conn %>
+        <%= render "_header.html", conn: @conn %>
       </header>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
 
       <nav>
-        Empty....
+        Manage users<br>
+        Record a game<br>
+        Generate report 
       </nav>
 
       <main role="main">
