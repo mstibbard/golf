@@ -19,20 +19,17 @@
           <%= link "Reports", to: page_path(@conn, :index), class: "navbar-item" %>
         <% end %>
       </div>
-    </div>
 
-    <div class="navbar-menu">
-        <div class="navbar-item">
+      <div class="navbar-item">
+        <div class="navbar-end">
           <%= if @conn.assigns[:user] do %>
-            <div class="navbar-end">
-              <%= link "Sign out", to: auth_path(@conn, :delete), class: "button is-danger" %>
-            </div>
+            <%= link "Sign out", to: auth_path(@conn, :delete), class: "button is-danger" %>
           <% else %>
             <%= link to: auth_path(@conn, :request, "google", scope: "email profile"), class: "button is-primary" do %>
               <span class="icon">
                 <img src="<%= static_path(@conn, "/images/google-noborder.svg") %>">
               </span>
-              <span>Sign in</span>
+              <span>&ensp;Sign in</span>
             <% end %>
           <% end %>
         </div>
