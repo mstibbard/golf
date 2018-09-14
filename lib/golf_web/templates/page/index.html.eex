@@ -1,12 +1,4 @@
 <%= if @conn.assigns[:user] do %>
-<!--
-<h1 class="f2 bold mw5">How to use this site</h1>
-      <ul class="list pl0 ml0 mw5 br3">
-        <li class="ph3 pv2">Manage users (add / mark inactive)</li>
-        <li class="ph3 pv2">Record a game</li>
-        <li class="ph3 pv2">Generate reports</li>
-      </ul>
--->
 
 <% else %>
   To view player scores and record games, please sign in with Google.
