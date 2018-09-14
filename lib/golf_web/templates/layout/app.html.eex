@@ -19,13 +19,17 @@
 
     <%= if get_flash(@conn, :info) do %>
       <div class="notification is-success">
-        <%= get_flash(@conn, :info) %>
+        <div class="container">
+          <%= get_flash(@conn, :info) %>
+        </div>
       </div>
     <% end %>
 
     <%= if get_flash(@conn, :error) do %>
       <div class="notification is-danger">
-        <%= get_flash(@conn, :error) %>
+        <div class="container">
+          <%= get_flash(@conn, :error) %>
+        </div>
       </div>
     <% end %>
 
