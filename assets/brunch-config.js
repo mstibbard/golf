@@ -20,7 +20,10 @@ exports.config = {
       // }
     },
     stylesheets: {
-      joinTo: "css/app.css"
+      joinTo: {
+	"css/app.css": "css/app.scss",
+	"css/bulma.css": "css/bulma-customize.scss"
+      }
     },
     templates: {
       joinTo: "js/app.js"
@@ -40,7 +43,7 @@ exports.config = {
     watched: ["static", "css", "js", "vendor"],
     // Where to compile files to
     public: "../priv/static"
-  },
+    },
 
   // Configure your plugins
   plugins: {

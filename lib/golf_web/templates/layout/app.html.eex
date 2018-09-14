@@ -8,30 +8,34 @@
     <meta name="author" content="Matthew Stibbard">
 
     <title>St George Ladies Golf Club</title>
-    <link rel="stylesheet" href="https://unpkg.com/tachyons@4.10.0/css/tachyons.min.css"/>
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/bulma.css") %>">
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
   <body>
-    <div class="container">
-      <header>
-        <%= render "_header.html", conn: @conn %>
-      </header>
+    <header>
+      <%= render "_header.html", conn: @conn %>
+    </header>
 
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+    <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+    <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
 
-      <nav>
-        Manage users<br>
-        Record a game<br>
-        Generate report 
-      </nav>
+    <main role="main">
+      <%= render @view_module, @view_template, assigns %>
+    </main>
 
-      <main role="main">
-        <%= render @view_module, @view_template, assigns %>
-      </main>
+  <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+  <!-- JAVASCRIPT FOR HEADER -->
+  <script type="text/javascript">
+    (function() {
+      var burger = document.querySelector('.burger');
+      var nav = document.querySelector('#'+burger.dataset.target);
 
-    </div> <!-- /container -->
-    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+      burger.addEventListener('click', function(){
+        burger.classList.toggle('is-active');
+        nav.classList.toggle('is-active');
+      });
+    })();
+  </script>
   </body>
 </html>
