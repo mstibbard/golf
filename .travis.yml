@@ -1,0 +1,9 @@
+language: elixir
+elixir:
+  - 1.7.2
+addons:
+  postgresql: '10.5'
+env:
+  - MIX_ENV=test
+script:
+  - mix test
