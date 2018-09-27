@@ -51,8 +51,8 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :golf, Golf.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "matt",
-  password: "matt",
+  username: "postgres",
+  password: "postgres",
   database: "golf_dev",
   hostname: "localhost",
   pool_size: 10
