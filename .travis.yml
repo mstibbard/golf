@@ -4,7 +4,11 @@ elixir:
   - 1.7.2
 
 addons:
-  postgresql: '10.5'
+  postgresql: '10'
+  apt:
+    packages:
+      - postgresql-10
+      - postgresql-client-10
 
 services:
   - postgresql
@@ -14,6 +18,8 @@ before_script:
   - mix do ecto.create, ecto.migrate
 
 env:
+  global:
+    - PGPORT=5433
   - MIX_ENV=test
     
 script:
