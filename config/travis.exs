@@ -13,7 +13,7 @@ config :logger, level: :warn
 config :golf, Golf.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
-  password: "postgres",
+  password: "",
   database: "golf_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
