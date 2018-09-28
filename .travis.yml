@@ -20,7 +20,7 @@ before_script:
 env:
   global:
     - PGPORT=5433
-  - MIX_ENV=test
+    - MIX_ENV=test
     
 script:
   - mix test
