@@ -10,7 +10,10 @@ defmodule Golf.Mixfile do
       compilers: [:phoenix, :gettext] ++ Mix.compilers,
       start_permanent: Mix.env == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: ["coveralls": :test, "coveralls.detail": :test,
+        "coveralls.post": :test, "coveralls.html": :test]
     ]
   end
 
@@ -43,7 +46,8 @@ defmodule Golf.Mixfile do
       {:cowboy, "~> 1.0"},
       {:ueberauth, "~> 0.4"},
       {:ueberauth_google, "~> 0.5"},
-      {:ex_machina, "~> 2.0", only: :test}
+      {:ex_machina, "~> 2.0", only: :test},
+      {:excoveralls, "~> 0.7.0", only: [:test, :dev]},
     ]
   end
 
