@@ -1,17 +1,10 @@
-sudo: required
-
-dist: xenial
-
 language: elixir
 
 elixir:
   - 1.7.2
 
 addons:
-  postgresql: '10'
-  apt:
-    packages:
-      - postgresql-10-postgis-2.4
+  postgresql: '9.4'
 
 services:
   - postgresql
@@ -21,9 +14,7 @@ before_script:
   - mix do ecto.create, ecto.migrate
 
 env:
-  global:
-    - PGPORT=5433
-    - MIX_ENV=test
+  - MIX_ENV=test
     
 script:
   - mix test
