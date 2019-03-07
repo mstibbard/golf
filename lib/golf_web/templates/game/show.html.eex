@@ -1,0 +1,20 @@
+<div class="container">
+  <h1 class="title">Show Game</h1>
+
+  <ul>
+
+    <li>
+      <strong>Date:</strong>
+      <%= @game.date %>
+    </li>
+
+    <li>
+      <strong>Type:</strong>
+      <%= @game.type %>
+    </li>
+
+  </ul><br>
+
+  <%= link "Edit", to: Routes.game_path(@conn, :edit, @game) %><br><br>
+  <%= link "Back", to: Routes.game_path(@conn, :index) %>
+</div>

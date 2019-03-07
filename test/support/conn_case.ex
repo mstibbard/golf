@@ -19,20 +19,21 @@ defmodule GolfWeb.ConnCase do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
-      import GolfWeb.Router.Helpers
+      alias GolfWeb.Router.Helpers, as: Routes
+      import Golf.TestHelpers
 
       # The default endpoint for testing
       @endpoint GolfWeb.Endpoint
     end
   end
 
-
   setup tags do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Golf.Repo)
+
     unless tags[:async] do
       Ecto.Adapters.SQL.Sandbox.mode(Golf.Repo, {:shared, self()})
     end
+
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
-
 end

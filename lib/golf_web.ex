@@ -21,15 +21,17 @@ defmodule GolfWeb do
     quote do
       use Phoenix.Controller, namespace: GolfWeb
       import Plug.Conn
-      import GolfWeb.Router.Helpers
       import GolfWeb.Gettext
+      import Golf.Plugs.SetUser, only: [authenticate_user: 2]
+      alias GolfWeb.Router.Helpers, as: Routes
     end
   end
 
   def view do
     quote do
-      use Phoenix.View, root: "lib/golf_web/templates",
-                        namespace: GolfWeb
+      use Phoenix.View,
+        root: "lib/golf_web/templates",
+        namespace: GolfWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
@@ -37,7 +39,7 @@ defmodule GolfWeb do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      import GolfWeb.Router.Helpers
+      alias GolfWeb.Router.Helpers, as: Routes
       import GolfWeb.ErrorHelpers
       import GolfWeb.Gettext
     end
@@ -48,6 +50,7 @@ defmodule GolfWeb do
       use Phoenix.Router
       import Plug.Conn
       import Phoenix.Controller
+      import Golf.Plugs.SetUser, only: [authenticate_user: 2]
     end
   end
 

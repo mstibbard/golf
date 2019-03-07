@@ -11,7 +11,7 @@ defmodule Golf.Application do
       # Start the Ecto repository
       supervisor(Golf.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(GolfWeb.Endpoint, []),
+      supervisor(GolfWeb.Endpoint, [])
       # Start your own worker by calling: Golf.Worker.start_link(arg1, arg2, arg3)
       # worker(Golf.Worker, [arg1, arg2, arg3]),
     ]

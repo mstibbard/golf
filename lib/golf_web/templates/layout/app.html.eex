@@ -8,8 +8,8 @@
     <meta name="author" content="Matthew Stibbard">
 
     <title>St George Ladies Golf Club</title>
-    <link rel="stylesheet" href="<%= static_path(@conn, "/css/bulma.css") %>">
-    <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/bulma.css") %>">
+    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>">
   </head>
 
   <body>
@@ -37,7 +37,7 @@
       <%= render @view_module, @view_template, assigns %>
     </main>
 
-  <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+  <script src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   <!-- JAVASCRIPT FOR HEADER -->
   <script type="text/javascript">
     (function() {

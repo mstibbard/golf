@@ -6,7 +6,7 @@
     <section class="section">
       <h1 class="title">Please log in</h1>
       <h2 class="subtitle">It's mandatory!</h2>
-      <p>Please <%= link "sign in", to: auth_path(@conn, :request, "google", scope: "email profile") %>. You will then be able to manage the players, handicaps, and games.</p>
+      <p>Please <%= link "sign in", to: Routes.auth_path(@conn, :request, "google", scope: "email profile") %>. You will then be able to manage the players, handicaps, and games.</p>
     </section>
   <% end %>
 </div>

@@ -1,8 +1,8 @@
 <div class="navbar is-link">
   <div class="container">
     <div class="navbar-brand">
-      <%= link to: page_path(@conn, :index), class: "navbar-item" do %>
-        <img src="<%= static_path(@conn, "/images/sgl-logo-white.png") %>" width="178">
+      <%= link to: Routes.page_path(@conn, :index), class: "navbar-item" do %>
+        <img src="<%= Routes.static_path(@conn, "/images/sgl-logo-white.png") %>" width="178">
       <% end %>
       <div class="navbar-burger burger" data-target="navMenu">
         <span></span>
@@ -14,20 +14,20 @@
     <div id="navMenu" class="navbar-menu">
       <div class="navbar-start">
         <%= if @conn.assigns[:user] do %>
-          <%= link "Players", to: page_path(@conn, :index), class: "navbar-item" %>
-          <%= link "Games", to: page_path(@conn, :index), class: "navbar-item" %>
-          <%= link "Reports", to: page_path(@conn, :index), class: "navbar-item" %>
+          <%= link "Players", to: Routes.player_path(@conn, :index), class: "navbar-item" %>
+          <%= link "Games", to: Routes.game_path(@conn, :index), class: "navbar-item" %>
+          <%= link "Reports", to: Routes.page_path(@conn, :index), class: "navbar-item" %>
         <% end %>
       </div>
 
       <div class="navbar-item">
         <div class="navbar-end">
           <%= if @conn.assigns[:user] do %>
-            <%= link "Sign out", to: auth_path(@conn, :delete), class: "button is-danger" %>
+            <%= link "Sign out", to: Routes.auth_path(@conn, :delete), class: "button is-danger" %>
           <% else %>
-            <%= link to: auth_path(@conn, :request, "google", scope: "email profile"), class: "button is-primary" do %>
+            <%= link to: Routes.auth_path(@conn, :request, "google", scope: "email profile"), class: "button is-primary" do %>
               <span class="icon">
-                <img src="<%= static_path(@conn, "/images/google-noborder.svg") %>">
+                <img src="<%= Routes.static_path(@conn, "/images/google-noborder.svg") %>">
               </span>
               <span>&ensp;Sign in</span>
             <% end %>

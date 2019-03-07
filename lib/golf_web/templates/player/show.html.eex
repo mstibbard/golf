@@ -1,0 +1,11 @@
+<div class="container">
+  <h1 class="title">Showing Player</h1>
+  <strong>Name:</strong> <%= @player.name %><br>
+  <strong>ID:</strong> <%= @player.id %><br>
+  <strong>Handicap:</strong> <%= @player.handicap %><br>
+  <strong>Active?</strong> <%= @player.active %><br>
+  <%= link "Edit", to: Routes.player_path(@conn, :edit, @player.id) %>
+  <br><br>
+
+  <%= link "Back", to: Routes.player_path(@conn, :index) %> 
+</div>
