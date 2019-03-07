@@ -15,12 +15,13 @@ defmodule Golf.TestHelpers do
   end
 
   def player_fixture(attrs \\ %{}) do
-    attrs =
-      Enum.into(attrs, %{
-        name: "Namey McNameface",
-        active: true,
-        handicap: 10.0
-      })
+    attrs = 
+      attrs
+      |> Enum.into(%{
+           name: "Namey McNameface",
+           active: true,
+           handicap: 10.0
+         })
 
     {:ok, player} = Players.create_player(attrs)
 

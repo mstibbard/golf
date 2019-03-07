@@ -10,7 +10,7 @@ defmodule Golf.PlayersTest do
 
     test "list_players/0 returns all players" do
       # Creates player using player_fixture, binds id1 to the id created by the fixture
-      %Player{id: id1} = player_fixture()
+      %Player{id: id1} = player_fixture(@valid_attrs)
       assert [%Player{id: ^id1}] = Players.list_players()
       %Player{id: id2} = player_fixture()
       assert [%Player{id: ^id1}, %Player{id: ^id2}] = Players.list_players()
