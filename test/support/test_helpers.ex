@@ -16,13 +16,13 @@ defmodule Golf.TestHelpers do
   end
 
   def player_fixture(attrs \\ %{}) do
-    {:ok, player} = 
+    {:ok, player} =
       attrs
       |> Enum.into(%{
-           name: "Namey McNameface",
-           active: true,
-           handicap: 10.0
-         })
+        name: "Namey McNameface",
+        active: true,
+        handicap: 10.0
+      })
       |> Players.create_player()
 
     player
@@ -32,9 +32,9 @@ defmodule Golf.TestHelpers do
     {:ok, game} =
       attrs
       |> Enum.into(%{
-           date: ~D[2019-03-04],
-           type: "Stableford"
-         })
+        date: ~D[2019-03-04],
+        type: "Stableford"
+      })
       |> Games.create_game()
 
     game
@@ -47,11 +47,11 @@ defmodule Golf.TestHelpers do
     {:ok, score} =
       attrs
       |> Enum.into(%{
-           score: 36,
-           handicap_change: 0.0,
-           player_id: player.id,
-           game_id: game.id
-         })
+        score: 36,
+        handicap_change: 0.0,
+        player_id: player.id,
+        game_id: game.id
+      })
       |> Scores.create_score()
 
     score

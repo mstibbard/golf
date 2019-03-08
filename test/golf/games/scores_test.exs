@@ -29,7 +29,7 @@ defmodule Golf.ScoresTest do
     end
 
     test "create_score/1 with valid data creates a score", prep do
-      attrs = 
+      attrs =
         prep
         |> Enum.into(@valid_attrs)
 
@@ -39,7 +39,7 @@ defmodule Golf.ScoresTest do
     end
 
     test "create_score/1 with invalid data returns error changeset", prep do
-      attrs = 
+      attrs =
         prep
         |> Enum.into(@invalid_attrs)
 
@@ -51,7 +51,7 @@ defmodule Golf.ScoresTest do
 
       prep = %{player_id: score.player_id, game_id: score.game_id}
 
-      attrs = 
+      attrs =
         prep
         |> Enum.into(@update_attrs)
 
