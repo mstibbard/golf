@@ -49,6 +49,7 @@ defmodule Golf.TestHelpers do
       |> Enum.into(%{
         score: 36,
         handicap_change: 0.0,
+        points: 1,
         player_id: player.id,
         game_id: game.id
       })

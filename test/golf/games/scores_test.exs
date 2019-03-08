@@ -7,7 +7,7 @@ defmodule Golf.ScoresTest do
   alias Decimal, as: D
 
   describe "scores" do
-    @valid_attrs %{score: 36, handicap_change: 0.0, player_id: 0, game_id: 0}
+    @valid_attrs %{score: 36, handicap_change: 0.0, points: 1, player_id: 0, game_id: 0}
     @update_attrs %{score: 40, handicap_change: 0.0}
     @invalid_attrs %{score: -30, handicap_change: nil, player_id: nil, game_id: nil}
 
