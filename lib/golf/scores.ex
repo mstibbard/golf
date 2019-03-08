@@ -6,6 +6,7 @@ defmodule Golf.Scores do
   import Ecto.Query, warn: false
   alias Golf.Repo
 
+  alias Decimal, as: D
   alias Golf.Calculator
   alias Golf.Games
   alias Golf.Games.Score
@@ -32,7 +33,10 @@ defmodule Golf.Scores do
     |> Repo.update()
   end
 
-  def delete_score(%Score{} = score), do: Repo.delete(score)
+  def delete_score(%Score{} = score) do
+    update_handicap(score.player_id, score.handicap_change, "delete")
+    Repo.delete(score)
+  end
 
   def change_score(%Score{} = score), do: Score.changeset(score, %{})
 
@@ -45,6 +49,8 @@ defmodule Golf.Scores do
         game.type,
         player.handicap
       )
+
+    update_handicap(player, change, "")
 
     Ecto.Changeset.put_change(changeset, :handicap_change, change)
   end
@@ -65,5 +71,16 @@ defmodule Golf.Scores do
 
         %{player: player, game: game}
     end
+  end
+
+  defp update_handicap(player_id, change, "delete") do
+    player = Players.get_player!(player_id)
+    attrs = %{handicap: D.sub(player.handicap, change)}
+    Players.update_player(player, attrs)
+  end
+
+  defp update_handicap(player, change, _) do
+    attrs = %{handicap: D.add(player.handicap, change)}
+    Players.update_player(player, attrs)
   end
 end

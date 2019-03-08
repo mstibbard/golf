@@ -10,15 +10,6 @@ defmodule Golf.GamesTest do
     @update_attrs %{date: ~D[2011-05-18], type: "some updated type"}
     @invalid_attrs %{date: nil, type: nil}
 
-    def game_fixture(attrs \\ %{}) do
-      {:ok, game} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Games.create_game()
-
-      game
-    end
-
     test "list_games/0 returns all games" do
       game = game_fixture()
       assert Games.list_games() == [game]
