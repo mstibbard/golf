@@ -36,6 +36,9 @@ defmodule Golf.ScoresTest do
       assert {:ok, %Score{} = score} = Scores.create_score(attrs)
       assert score.score == 36
       assert score.handicap_change == D.new("0.3")
+
+      player = Players.get_player!(score.player_id)
+      assert player.handicap == D.new("10.3")
     end
 
     test "create_score/1 with invalid data returns error changeset", prep do
@@ -59,6 +62,9 @@ defmodule Golf.ScoresTest do
       assert %Score{} = score
       assert score.score == 40
       assert score.handicap_change == D.new("-1.0")
+
+      player = Players.get_player!(score.player_id)
+      assert player.handicap == D.new("9.0")
     end
 
     test "update_score/2 with invalid data returns error changeset" do

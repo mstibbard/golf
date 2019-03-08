@@ -29,7 +29,7 @@ defmodule Golf.Scores do
   def update_score(%Score{} = score, attrs) do
     score
     |> Score.changeset(attrs)
-    |> put_handicap_change()
+    |> update_handicap_change()
     |> Repo.update()
   end
 
@@ -51,6 +51,25 @@ defmodule Golf.Scores do
       )
 
     update_handicap(player, change, "")
+
+    Ecto.Changeset.put_change(changeset, :handicap_change, change)
+  end
+
+  defp update_handicap_change(changeset) do
+    %{player: player, game: game} = get_player_and_game(changeset)
+
+    change =
+      Calculator.calculate_change(
+        changeset.changes.score,
+        game.type,
+        player.handicap
+      )
+
+    update_handicap(
+      player,
+      D.sub(change, changeset.data.handicap_change),
+      ""
+    )
 
     Ecto.Changeset.put_change(changeset, :handicap_change, change)
   end
