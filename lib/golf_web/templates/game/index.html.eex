@@ -24,7 +24,7 @@
           <td><%= link "Edit", to: Routes.game_path(@conn, :edit, game) %></td>
           <td>
             <%= link "Delete", to: Routes.game_path(@conn, :delete, game),
-                               method: :delete, data: [confirm: "Are you sure?"] %>
+                               method: :delete, data: [confirm: "Are you sure? This will revert all handicaps accordingly."] %>
           </td>
         </tr>
     <% end %>
