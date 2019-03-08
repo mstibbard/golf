@@ -22,25 +22,26 @@ defmodule Golf.Scores do
   def create_score(attrs \\ %{}) do
     %Score{}
     |> Score.changeset(attrs)
-    |> put_handicap_change()
+    |> put_handicap_change("create")
     |> Repo.insert()
   end
 
   def update_score(%Score{} = score, attrs) do
     score
     |> Score.changeset(attrs)
-    |> update_handicap_change()
+    |> put_handicap_change("update")
     |> Repo.update()
   end
 
   def delete_score(%Score{} = score) do
-    update_handicap(score.player_id, score.handicap_change, "delete")
+    player = Players.get_player!(score.player_id)
+    update_handicap(player, D.minus(score.handicap_change))
     Repo.delete(score)
   end
 
   def change_score(%Score{} = score), do: Score.changeset(score, %{})
 
-  defp put_handicap_change(changeset) do
+  defp put_handicap_change(changeset, action) do
     %{player: player, game: game} = get_player_and_game(changeset)
 
     change =
@@ -50,26 +51,16 @@ defmodule Golf.Scores do
         player.handicap
       )
 
-    update_handicap(player, change, "")
+    cond do
+      action == "create" ->
+        update_handicap(player, change)
 
-    Ecto.Changeset.put_change(changeset, :handicap_change, change)
-  end
-
-  defp update_handicap_change(changeset) do
-    %{player: player, game: game} = get_player_and_game(changeset)
-
-    change =
-      Calculator.calculate_change(
-        changeset.changes.score,
-        game.type,
-        player.handicap
-      )
-
-    update_handicap(
-      player,
-      D.sub(change, changeset.data.handicap_change),
-      ""
-    )
+      action == "update" ->
+        update_handicap(
+          player,
+          D.sub(change, changeset.data.handicap_change)
+        )
+    end
 
     Ecto.Changeset.put_change(changeset, :handicap_change, change)
   end
@@ -92,13 +83,7 @@ defmodule Golf.Scores do
     end
   end
 
-  defp update_handicap(player_id, change, "delete") do
-    player = Players.get_player!(player_id)
-    attrs = %{handicap: D.sub(player.handicap, change)}
-    Players.update_player(player, attrs)
-  end
-
-  defp update_handicap(player, change, _) do
+  defp update_handicap(player, change) do
     attrs = %{handicap: D.add(player.handicap, change)}
     Players.update_player(player, attrs)
   end
