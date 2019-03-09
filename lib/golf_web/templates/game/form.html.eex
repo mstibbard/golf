@@ -22,6 +22,6 @@
   </div><br>
 
   <div class="form-group">
-    <%= submit "Submit", class: "btn btn-primary" %>
+    <%= submit "Submit", class: "button is-primary" %>
   </div>
 <% end %><br>
