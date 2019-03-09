@@ -15,6 +15,43 @@
 
   </ul><br>
 
-  <%= link "Edit", to: Routes.game_path(@conn, :edit, @game) %><br><br>
+  <%= link "Edit Game", to: Routes.game_path(@conn, :edit, @game) %>
+  <br><br>
+
+  <div class="content">
+    <section>
+      <h1 class="title">Game Scores</h1>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Player</th>
+            <th>Score</th>
+            <th>Handicap Change</th>
+            <th>Points</th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <%# <td><%= link "Show", to: Routes.score_path(@conn, :show, score) %1></td> %>
+            <%# <td><%= link "Edit", to: Routes.score_path(@conn, :edit, score) %1></td> %>
+            <%# <td> %>
+            <%#   <%= link "Delete", to: Routes.score_path(@conn, :delete, score), %>
+            <%#                      method: :delete, data: [confirm: "Are you sure? This will revert the handicap accordingly."] %1> %>
+            <%# </td> %>
+        </tr>
+          </tr>
+        </tbody>
+      </table>  
+    </section>
+  </div>
+
   <%= link "Back", to: Routes.game_path(@conn, :index) %>
 </div>

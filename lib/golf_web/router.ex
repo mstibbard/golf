@@ -19,6 +19,7 @@ defmodule GolfWeb.Router do
 
     resources("/players", PlayerController)
     resources("/games", GameController)
+    resources("/games/score", ScoreController)
   end
 
   scope "/auth", GolfWeb do
