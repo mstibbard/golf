@@ -1,8 +1,17 @@
 defmodule GolfWeb.ScoreController do
   use GolfWeb, :controller
 
+  alias Golf.Games
   alias Golf.Players
   alias Golf.Scores
+
+  def new(conn, %{"id" => id}) do
+    game = Games.get_game!(id)
+    players = Players.list_active_players()
+    csrf = Plug.CSRFProtection.get_csrf_token()
+
+    render(conn, "new.html", game: game, players: players, csrf: csrf)
+  end
 
   def show(conn, %{"id" => id}) do
     score = Scores.get_score!(id)
@@ -37,5 +46,47 @@ defmodule GolfWeb.ScoreController do
     conn
     |> put_flash(:info, "Score deleted successfully.")
     |> redirect(to: Routes.game_path(conn, :show, score.game_id))
+  end
+
+  def create_many(conn, form_params) do
+    %{"game_id" => game_id} = form_params
+
+    form_params
+    |> Map.delete("game_id")
+    |> Map.delete("_csrf_token")
+    |> prepare_for_changeset(game_id)
+    |> remove_scores_of_zero()
+    |> create_scores()
+
+    conn
+    |> put_flash(:info, "All scores created successfully.")
+    |> redirect(to: Routes.game_path(conn, :show, game_id))
+  end
+
+  defp prepare_for_changeset(params, game_id) do
+    params
+    |> Enum.map(fn {x, y} ->
+      %{
+        player_id: x,
+        game_id: game_id,
+        score: y,
+        handicap: 0,
+        handicap_change: 0.0,
+        points: 1
+      }
+    end)
+  end
+
+  defp remove_scores_of_zero(scores) do
+    scores
+    |> Enum.filter(fn x ->
+      x.score > 0
+    end)
+  end
+
+  defp create_scores([]), do: []
+  defp create_scores([hd | tl]) do
+    Scores.create_score(hd)
+    create_scores(tl)
   end
 end

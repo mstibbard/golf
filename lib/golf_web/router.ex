@@ -19,7 +19,9 @@ defmodule GolfWeb.Router do
 
     resources("/players", PlayerController)
     resources("/games", GameController)
-    resources("/games/score", ScoreController)
+    resources "/games/score", ScoreController, except: [:new]
+    get("/games/score/new/:id", ScoreController, :new)
+    post("/games/score/create_many", ScoreController, :create_many)
   end
 
   scope "/auth", GolfWeb do

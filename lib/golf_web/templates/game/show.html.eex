@@ -21,11 +21,16 @@
   <div class="content">
     <section>
       <h1 class="title">Game Scores</h1>
+
+      <%= link "Add Player Scores", to: Routes.score_path(@conn, :new, @game) %>
+      <br><br>
+
       <table class="table">
         <thead>
           <tr>
             <th>Player</th>
             <th>Score</th>
+            <th>Handicap</th>
             <th>Handicap Change</th>
             <th>Points</th>
             <th></th>
@@ -36,6 +41,7 @@
         <tbody>
 
           <tr>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
