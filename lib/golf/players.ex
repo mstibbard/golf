@@ -33,4 +33,11 @@ defmodule Golf.Players do
     |> Player.players_alphabetically()
     |> Repo.all()
   end
+
+  def list_active_players() do
+    Player
+    |> Player.active_players()
+    |> Player.players_alphabetically()
+    |> Repo.all()
+  end
 end

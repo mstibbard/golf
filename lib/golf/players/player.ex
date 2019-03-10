@@ -17,6 +17,10 @@ defmodule Golf.Players.Player do
     |> validate_required([:name, :active, :handicap])
   end
 
+  def active_players(query) do
+    from(p in query, where: p.active == :true)
+  end
+
   def players_alphabetically(query) do
     from(p in query, order_by: [asc: p.name])
   end
