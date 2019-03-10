@@ -28,7 +28,8 @@
                   <td>
                     <input type="number" 
                            id="<%= p.id %>"
-                           name="<%= p.id %>">
+                           name="<%= p.id %>"
+                           value= 0>
                   </td>
                   <input type="hidden" name="game_id" value="<%= @game.id %>">
                 </tr>

@@ -8,6 +8,8 @@ defmodule Golf.Players.Player do
     field(:active, :boolean)
     field(:handicap, :decimal)
 
+    has_many(:score, Golf.Games.Score)
+
     timestamps()
   end
 
@@ -24,4 +26,10 @@ defmodule Golf.Players.Player do
   def players_alphabetically(query) do
     from(p in query, order_by: [asc: p.name])
   end
+
+  # def unique_players_for_game(query, game_id) do
+  #   from(p in query,
+  #        join: c in assoc(p, :score),
+  #        where: c.game_id != game_id)
+  # end
 end

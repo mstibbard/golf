@@ -3,6 +3,7 @@ defmodule GolfWeb.GameController do
 
   alias Golf.Games
   alias Golf.Games.Game
+  alias Golf.Scores
 
   def index(conn, _params) do
     games = Games.list_games()
@@ -28,7 +29,8 @@ defmodule GolfWeb.GameController do
 
   def show(conn, %{"id" => id}) do
     game = Games.get_game!(id)
-    render(conn, "show.html", game: game)
+    scores = Scores.get_scores_by_game_id!(id)
+    render(conn, "show.html", game: game, scores: scores)
   end
 
   def edit(conn, %{"id" => id}) do

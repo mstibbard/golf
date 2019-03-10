@@ -17,6 +17,12 @@ defmodule Golf.Scores do
     |> Repo.all()
   end
 
+  def get_scores_by_game_id!(game_id) do
+    Score
+    |> Score.by_game_id(game_id)
+    |> Repo.all()
+  end
+
   def get_score!(id), do: Repo.get!(Score, id)
 
   def create_score(attrs \\ %{}) do

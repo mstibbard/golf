@@ -1,6 +1,7 @@
 defmodule Golf.Games.Score do
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.Query
 
   schema "scores" do
     field(:score, :integer)
@@ -26,5 +27,12 @@ defmodule Golf.Games.Score do
       :game_id,
       :points
     ])
+  end
+
+  def by_game_id(query, game_id) do
+    from(s in query,
+      preload: [:player],
+      where: s.game_id == ^game_id
+    )
   end
 end

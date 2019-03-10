@@ -36,5 +36,20 @@ defmodule GolfWeb.ScoreControllerTest do
       assert String.contains?(conn.resp_body, player2.name)
       refute String.contains?(conn.resp_body, player3.name)
     end
+
+    test "score of zero is ignored", %{conn: conn} do
+      game = game_fixture()
+      player1 = player_fixture(%{name: "Bobby"})
+      player2 = player_fixture(%{name: "Jane"})
+
+      values = %{"game_id" => game.id, player1.id => 36, player2.id => 0}
+
+      create_conn = post(conn, Routes.score_path(conn, :create_many, values))
+      assert redirected_to(create_conn) == Routes.game_path(create_conn, :show, game.id)
+
+      conn = get(conn, Routes.game_path(conn, :show, game.id))
+      assert String.contains?(conn.resp_body, player1.name)
+      refute String.contains?(conn.resp_body, player2.name)
+    end
   end
 end

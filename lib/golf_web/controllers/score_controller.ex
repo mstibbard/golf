@@ -7,7 +7,7 @@ defmodule GolfWeb.ScoreController do
 
   def new(conn, %{"id" => id}) do
     game = Games.get_game!(id)
-    players = Players.list_active_players()
+    players = Players.list_unique_players(game.id)
     csrf = Plug.CSRFProtection.get_csrf_token()
 
     render(conn, "new.html", game: game, players: players, csrf: csrf)
@@ -69,7 +69,7 @@ defmodule GolfWeb.ScoreController do
       %{
         player_id: x,
         game_id: game_id,
-        score: y,
+        score: String.to_integer(y),
         handicap: 0,
         handicap_change: 0.0,
         points: 1
