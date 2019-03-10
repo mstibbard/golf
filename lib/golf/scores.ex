@@ -22,6 +22,7 @@ defmodule Golf.Scores do
   def create_score(attrs \\ %{}) do
     %Score{}
     |> Score.changeset(attrs)
+    |> put_handicap
     |> put_handicap_change("create")
     |> Repo.insert()
   end
@@ -40,6 +41,11 @@ defmodule Golf.Scores do
   end
 
   def change_score(%Score{} = score), do: Score.changeset(score, %{})
+
+  defp put_handicap(changeset) do
+    player = Players.get_player!(changeset.changes.player_id)
+    Ecto.Changeset.put_change(changeset, :handicap, player.handicap)
+  end
 
   defp put_handicap_change(changeset, action) do
     %{player: player, game: game} = get_player_and_game(changeset)

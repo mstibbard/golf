@@ -14,7 +14,12 @@
     </li>
 
     <li>
-      <strong>Handicap Change:</strong>
+      <strong>Handicap for this game:</strong>
+      <%= @score.handicap %>
+    </li>
+
+    <li>
+      <strong>Change to handicap from this game:</strong>
       <%= @score.handicap_change %>
     </li>
 
