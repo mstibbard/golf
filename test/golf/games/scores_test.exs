@@ -7,15 +7,15 @@ defmodule Golf.ScoresTest do
   alias Decimal, as: D
 
   describe "scores" do
-    @valid_attrs %{score: 36, handicap_change: 0.0, points: 1, player_id: 0, game_id: 0}
+    @valid_attrs %{score: 36, handicap: 0, handicap_change: 0.0, points: 1, player_id: 0, game_id: 0}
     @update_attrs %{score: 40, handicap_change: 0.0}
     @invalid_attrs %{score: -30, handicap_change: nil, player_id: nil, game_id: nil}
 
     setup do
       %{id: game_id} = game_fixture()
-      %{id: player_id} = player_fixture()
+      %{id: player_id, handicap: handicap} = player_fixture()
 
-      {:ok, %{game_id: game_id, player_id: player_id}}
+      {:ok, %{game_id: game_id, player_id: player_id, handicap: handicap}}
     end
 
     test "list_scores/0 lists all scores" do
@@ -35,6 +35,7 @@ defmodule Golf.ScoresTest do
 
       assert {:ok, %Score{} = score} = Scores.create_score(attrs)
       assert score.score == 36
+      assert score.handicap == D.new("10.0")
       assert score.handicap_change == D.new("0.3")
 
       player = Players.get_player!(score.player_id)

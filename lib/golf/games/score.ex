@@ -4,6 +4,7 @@ defmodule Golf.Games.Score do
 
   schema "scores" do
     field(:score, :integer)
+    field(:handicap, :decimal)
     field(:handicap_change, :decimal)
     field(:points, :integer)
 
@@ -16,7 +17,14 @@ defmodule Golf.Games.Score do
   @doc false
   def changeset(score, attrs) do
     score
-    |> cast(attrs, [:score, :handicap_change, :player_id, :game_id, :points])
-    |> validate_required([:score, :handicap_change, :player_id, :game_id, :points])
+    |> cast(attrs, [:score, :handicap, :handicap_change, :player_id, :game_id, :points])
+    |> validate_required([
+      :score,
+      :handicap,
+      :handicap_change,
+      :player_id,
+      :game_id,
+      :points
+    ])
   end
 end
