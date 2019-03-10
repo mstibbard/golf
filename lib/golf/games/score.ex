@@ -32,7 +32,18 @@ defmodule Golf.Games.Score do
   def by_game_id(query, game_id) do
     from(s in query,
       preload: [:player],
-      where: s.game_id == ^game_id
+      where: s.game_id == ^game_id,
+      join: p in assoc(s, :player),
+      order_by: [asc: p.name]
+    )
+  end
+
+  def by_player_id(query, player_id) do
+    from(s in query,
+      preload: [:game],
+      where: s.player_id == ^player_id,
+      join: g in assoc(s, :game),
+      order_by: [desc: g.date]
     )
   end
 end
