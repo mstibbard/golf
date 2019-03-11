@@ -41,10 +41,18 @@ defmodule Golf.Players do
     |> Repo.all()
   end
 
-  def list_unique_players(game_id) do
-    Player
-    |> Player.active_players()
-    |> Player.players_alphabetically()
+  def players_without_score_for_game_id(game_id) do
+    base = 
+      Player
+      |> Player.active_players()
+
+    to_remove = 
+      base
+      |> Player.existing_score(game_id)
+
+    base
+    |> Player.remove_existing(to_remove)
+    |> Player.players_alphabetically_sub()
     |> Repo.all() 
   end
 end

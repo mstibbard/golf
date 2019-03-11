@@ -7,7 +7,7 @@ defmodule GolfWeb.ScoreController do
 
   def new(conn, %{"id" => id}) do
     game = Games.get_game!(id)
-    players = Players.list_unique_players(game.id)
+    players = Players.players_without_score_for_game_id(game.id)
     csrf = Plug.CSRFProtection.get_csrf_token()
 
     render(conn, "new.html", game: game, players: players, csrf: csrf)

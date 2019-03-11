@@ -27,9 +27,19 @@ defmodule Golf.Players.Player do
     from(p in query, order_by: [asc: p.name])
   end
 
-  # def unique_players_for_game(query, game_id) do
-  #   from(p in query,
-  #        join: c in assoc(p, :score),
-  #        where: c.game_id != game_id)
-  # end
+  def players_alphabetically_sub(query) do
+    from(p in subquery(query), order_by: [asc: p.name])
+  end
+
+  def existing_score(query, game_id) do
+    from p in query,
+      join: s in assoc(p, :score),
+      where: s.game_id == ^game_id
+  end
+
+  def remove_existing(query, to_remove) do
+    from p in query,
+      select: p,
+      except: ^to_remove
+  end
 end
