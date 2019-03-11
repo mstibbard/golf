@@ -40,9 +40,10 @@ defmodule Golf.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:ecto, "~> 3.0.7"},
       {:phoenix, "~> 1.3.4"},
       {:phoenix_pubsub, "~> 1.0"},
-      {:phoenix_ecto, "~> 3.2"},
+      {:phoenix_ecto, "~> 4.0"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 2.10"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
@@ -50,9 +51,10 @@ defmodule Golf.Mixfile do
       {:cowboy, "~> 1.0"},
       {:ueberauth, "~> 0.4"},
       {:ueberauth_google, "~> 0.5"},
-      {:ex_machina, "~> 2.0", only: :test},
+      {:ex_machina, "~> 2.3", only: :test, override: :true},
       {:excoveralls, "~> 0.7.0", only: [:test, :dev]},
-      {:decimal, "~> 1.0"}
+      {:decimal, "~> 1.0"},
+      {:ecto_sql, "~> 3.0.5"},
     ]
   end
 

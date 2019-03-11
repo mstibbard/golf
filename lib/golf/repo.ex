@@ -1,5 +1,7 @@
 defmodule Golf.Repo do
-  use Ecto.Repo, otp_app: :golf
+  use Ecto.Repo,
+    otp_app: :golf,
+    adapter: Ecto.Adapters.Postgres
 
   @doc """
   Dynamically loads the repository url from the
