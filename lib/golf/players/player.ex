@@ -42,4 +42,9 @@ defmodule Golf.Players.Player do
       select: p,
       except: ^to_remove
   end
+
+  def handicap_within_range(query, min, max) do
+    from p in query,
+      where: p.handicap >= ^min and p.handicap <= ^max
+  end
 end

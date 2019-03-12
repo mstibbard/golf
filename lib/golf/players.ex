@@ -55,4 +55,11 @@ defmodule Golf.Players do
     |> Player.players_alphabetically_sub()
     |> Repo.all() 
   end
+
+  def get_division(min, max) do
+    Player
+    |> Player.active_players()
+    |> Player.handicap_within_range(min, max)
+    |> Repo.all()
+  end
 end

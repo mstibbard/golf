@@ -2,6 +2,9 @@
   <%= if @conn.assigns[:user] do %>
     <section class="section">
       <h1 class="title">Welcome <%= @conn.assigns.user.first_name %>!</h1>
+
+      <%= render "divisions.html", conn: @conn, div1: @div1, div2: @div2, div3: @div3 %>
+
   <% else %>
     <section class="section">
       <h1 class="title">Please log in</h1>
