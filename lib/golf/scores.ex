@@ -47,15 +47,17 @@ defmodule Golf.Scores do
   end
 
   def delete_score(%Score{} = score) do
-    player = Players.get_player!(score.player_id)
-    update_handicap(player, D.minus(score.handicap_change))
+    Players.get_player!(score.player_id)
+    |> update_handicap(D.minus(score.handicap_change))
+
     Repo.delete(score)
   end
 
   def delete_many_scores([]), do: []
   def delete_many_scores([hd | rest]) do
-    score = get_score!(hd.id)
-    delete_score(score)
+    get_score!(hd.id)
+    |> delete_score()
+
     delete_many_scores(rest)
   end
 
