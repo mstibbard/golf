@@ -58,13 +58,12 @@ defmodule Golf.Players do
   end
 
   def get_division(min, max) do
-    players =
-      Player
-      |> Player.active_players()
-      |> Player.handicap_within_range(min, max)
-      |> Repo.all()
-      |> round_handicaps()
-      |> Enum.sort_by(&(&1.name))
+    Player
+    |> Player.active_players()
+    |> Player.handicap_within_range(min, max)
+    |> Repo.all()
+    |> round_handicaps()
+    |> Enum.sort_by(&(&1.name))
   end
 
   defp round_handicaps(list), do: round_handicaps(list, [])
