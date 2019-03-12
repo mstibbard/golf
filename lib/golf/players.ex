@@ -4,6 +4,7 @@ defmodule Golf.Players do
   """
   alias Golf.Repo
   alias Golf.Players.Player
+  alias Decimal, as: D
 
   def list_players() do
     players_ascending()
@@ -57,9 +58,23 @@ defmodule Golf.Players do
   end
 
   def get_division(min, max) do
-    Player
-    |> Player.active_players()
-    |> Player.handicap_within_range(min, max)
-    |> Repo.all()
+    players =
+      Player
+      |> Player.active_players()
+      |> Player.handicap_within_range(min, max)
+      |> Repo.all()
+      |> round_handicaps()
+      |> Enum.sort_by(&(&1.name))
+  end
+
+  defp round_handicaps(list), do: round_handicaps(list, [])
+  defp round_handicaps([], acc), do: acc
+  defp round_handicaps([player | rest], acc) do
+    vals = %{
+      handicap: D.round(player.handicap, 0, :half_up),
+      name: player.name
+    }
+
+    round_handicaps(rest, [vals | acc])
   end
 end

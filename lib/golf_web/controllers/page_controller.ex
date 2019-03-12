@@ -14,6 +14,7 @@ defmodule GolfWeb.PageController do
     div1 = Players.get_division(0, 27)
     div2 = Players.get_division(28, 36)
     div3 = Players.get_division(37, 45)
+
     render(conn, "print.html", div1: div1, div2: div2, div3: div3)
   end
 end
