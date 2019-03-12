@@ -7,6 +7,7 @@ defmodule Golf.Games do
   alias Golf.Repo
 
   alias Golf.Games.Game
+  alias Golf.Scores
 
   @doc """
   Returns the list of games.
@@ -86,6 +87,9 @@ defmodule Golf.Games do
 
   """
   def delete_game(%Game{} = game) do
+    Scores.get_scores_by_game_id!(game.id)
+    |> Scores.delete_many_scores()
+
     Repo.delete(game)
   end
 

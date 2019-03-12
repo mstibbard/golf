@@ -52,5 +52,52 @@ defmodule GolfWeb.GameControllerTest do
       conn = post(conn, Routes.game_path(conn, :create), game: @invalid_attrs)
       assert html_response(conn, 200) =~ "check the errors"
     end
+
+    test "delete game reverts all player handicaps", %{conn: conn, user: user} do
+      game = game_fixture(%{date: ~D[2019-03-11]})
+      player1 = player_fixture(name: "Jo", handicap: 20.0)
+      player2 = player_fixture(name: "Sam", handicap: 10.0)
+      score_fixture(%{game_id: game.id, player_id: player1.id, score: 40})
+      score_fixture(%{game_id: game.id, player_id: player2.id, score: 37})
+
+      # Confirm scores recorded against game
+      conn = get(conn, Routes.game_path(conn, :show, game.id))
+      assert String.contains?(
+        conn.resp_body,
+        "#{player1.name}</td>\n            <td>40"
+      )
+      assert String.contains?(
+        conn.resp_body,
+        "#{player2.name}</td>\n            <td>37"
+      )
+
+      # Confirm handicaps were amended based on game scores
+      conn = 
+        conn
+        |> reset_conn_reassign_user(user)
+        |> get(Routes.player_path(conn, :index))
+      assert String.contains?(conn.resp_body, "#{player1.name}</td>\n          <td>19.0")
+      assert String.contains?(conn.resp_body, "#{player2.name}</td>\n          <td>9.5")
+
+      # Delete the game
+      conn = 
+        conn
+        |> reset_conn_reassign_user(user)
+        |> delete(Routes.game_path(conn, :delete, game.id))
+
+      # Confirm the handicaps were reverted
+      conn = 
+        conn
+        |> reset_conn_reassign_user(user)
+        |> get(Routes.player_path(conn, :index))
+      assert String.contains?(conn.resp_body, "#{player1.name}</td>\n          <td>20.0")
+      assert String.contains?(conn.resp_body, "#{player2.name}</td>\n          <td>10.0")
+    end
+  end
+
+  defp reset_conn_reassign_user(conn, user) do
+    conn
+    |> recycle()
+    |> Map.put(:assigns, %{user: user})
   end
 end

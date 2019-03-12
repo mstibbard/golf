@@ -55,7 +55,7 @@ defmodule GolfWeb.ScoreControllerTest do
       %{conn: conn, game: game} do
       player1 = player_fixture(%{name: "Bobby"})
       player2 = player_fixture(%{name: "Jane"})
-      score = score_fixture(%{
+      score_fixture(%{
         game_id: game.id,
         player_id: player1.id
       })

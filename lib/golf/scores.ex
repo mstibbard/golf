@@ -52,6 +52,13 @@ defmodule Golf.Scores do
     Repo.delete(score)
   end
 
+  def delete_many_scores([]), do: []
+  def delete_many_scores([hd | rest]) do
+    score = get_score!(hd.id)
+    delete_score(score)
+    delete_many_scores(rest)
+  end
+
   def change_score(%Score{} = score), do: Score.changeset(score, %{})
 
   defp put_handicap(changeset) do
