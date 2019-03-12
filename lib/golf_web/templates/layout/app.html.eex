@@ -10,6 +10,7 @@
     <title>St George Ladies Golf Club</title>
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/bulma.css") %>">
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>">
+    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/print.css") %>">
   </head>
 
   <body>

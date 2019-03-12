@@ -18,6 +18,7 @@ defmodule GolfWeb.Router do
     pipe_through([:browser, :authenticate_user])
 
     resources("/players", PlayerController)
+    get("/print", PageController, :print)
     resources("/games", GameController)
     resources "/games/score", ScoreController, except: [:new]
     get("/games/score/new/:id", ScoreController, :new)
