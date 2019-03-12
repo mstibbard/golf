@@ -14,6 +14,7 @@
     <div id="navMenu" class="navbar-menu">
       <div class="navbar-start">
         <%= if @conn.assigns[:user] do %>
+          <%= link "Divisions", to: Routes.page_path(@conn, :index), class: "navbar-item" %>
           <%= link "Players", to: Routes.player_path(@conn, :index), class: "navbar-item" %>
           <%= link "Games", to: Routes.game_path(@conn, :index), class: "navbar-item" %>
           <%= link "Reports", to: Routes.page_path(@conn, :index), class: "navbar-item" %>
