@@ -63,6 +63,12 @@ defmodule Golf.Scores do
 
   def change_score(%Score{} = score), do: Score.changeset(score, %{})
 
+  def sum_player_scores_in_range!(player_id, min, max) do
+    Score
+    |> Score.within_date_range(player_id, min, max)
+    |> Repo.all()
+  end
+
   defp put_handicap(changeset) do
     player = Players.get_player!(changeset.changes.player_id)
     Ecto.Changeset.put_change(changeset, :handicap, player.handicap)

@@ -5,6 +5,7 @@ defmodule Golf.Players do
   alias Golf.Repo
   alias Golf.Players.Player
   alias Decimal, as: D
+  alias Golf.Scores
 
   def list_players() do
     players_ascending()
@@ -66,6 +67,15 @@ defmodule Golf.Players do
     |> Enum.sort_by(&(&1.name))
   end
 
+  def get_attendance(year) do
+    {:ok, min} = Date.new(year, 1, 1)
+    {:ok, max} = Date.new(year, 12, 31)
+
+    list_active_players()
+    |> produce_attendance_map(min, max)
+    |> Enum.sort_by(&(&1.points), &>=/2)
+  end
+
   defp round_handicaps(list), do: round_handicaps(list, [])
   defp round_handicaps([], acc), do: acc
   defp round_handicaps([player | rest], acc) do
@@ -75,5 +85,19 @@ defmodule Golf.Players do
     }
 
     round_handicaps(rest, [vals | acc])
+  end
+
+  defp produce_attendance_map(list, min, max) do
+    produce_attendance_map(list, min, max, [])
+  end
+  defp produce_attendance_map([], _min, _max, acc), do: acc
+  defp produce_attendance_map([player | rest], min, max, acc) do
+    vals = %{
+      id: player.id, 
+      name: player.name,
+      points: List.first(Scores.sum_player_scores_in_range!(player.id, min, max))
+    }
+
+    produce_attendance_map(rest, min, max, [vals | acc])
   end
 end

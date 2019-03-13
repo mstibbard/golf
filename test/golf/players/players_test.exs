@@ -49,5 +49,21 @@ defmodule Golf.PlayersTest do
       player = player_fixture()
       assert %Ecto.Changeset{} = Players.change_player(player)
     end
+
+    test "get_attendance/1 returns list of players and points" do
+      player1 = player_fixture(%{name: "El"})
+      player2 = player_fixture(%{name: "Jo"})
+      game1 = game_fixture()
+      game2 = game_fixture(%{date: ~D[2019-01-09]})
+      score_fixture(%{game_id: game1.id, player_id: player1.id, points: 4})
+      score_fixture(%{game_id: game1.id, player_id: player2.id, points: 4})
+      score_fixture(%{game_id: game2.id, player_id: player1.id, points: 3})
+
+      player1_attendance = %{name: player1.name, id: player1.id, points: 7}
+      player2_attendance = %{name: player2.name, id: player2.id, points: 4}
+
+      assert Enum.member?(Players.get_attendance(2019), player1_attendance)
+      assert Enum.member?(Players.get_attendance(2019), player2_attendance)
+    end
   end
 end
