@@ -1,12 +1,12 @@
-<div class="columns">
+<div class="columns is-8 is-variable">
 
   <div class="column">
     <h2 class="title is-5">Division 1</h2>
-    <table class="table">
+    <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
       <thead>
-        <tr>
-          <th>Name</th>
-          <th>Handicap</th>
+        <tr class="has-background-dark">
+          <th class="has-text-white">Name</th>
+          <th class="has-text-white">Handicap</th>
         </tr>
       </thead>
       <tbody>
@@ -22,11 +22,11 @@
 
   <div class="column">
     <h2 class="title is-5">Division 2</h2>
-    <table class="table">
+    <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
       <thead>
-        <tr>
-          <th>Name</th>
-          <th>Handicap</th>
+        <tr class="has-background-dark">
+          <th class="has-text-white">Name</th>
+          <th class="has-text-white">Handicap</th>
         </tr>
       </thead>
       <tbody>
@@ -42,11 +42,11 @@
 
   <div class="column">
     <h2 class="title is-5">Division 3</h2>
-    <table class="table">
+    <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
       <thead>
-        <tr>
-          <th>Name</th>
-          <th>Handicap</th>
+        <tr class="has-background-dark">
+          <th class="has-text-white">Name</th>
+          <th class="has-text-white">Handicap</th>
         </tr>
       </thead>
       <tbody>
