@@ -71,25 +71,31 @@ defmodule Golf.Scores do
   defp put_handicap_change(changeset, action) do
     %{player: player, game: game} = get_player_and_game(changeset)
 
-    change =
-      Calculator.calculate_change(
-        changeset.changes.score,
-        game.type,
-        player.handicap
-      )
-
     cond do
-      action == "create" ->
-        update_handicap(player, change)
+      Map.has_key?(changeset.changes, :score) ->
+        change =
+          Calculator.calculate_change(
+            changeset.changes.score,
+            game.type,
+            player.handicap
+          )
 
-      action == "update" ->
-        update_handicap(
-          player,
-          D.sub(change, changeset.data.handicap_change)
-        )
+        cond do
+          action == "create" ->
+            update_handicap(player, change)
+
+          action == "update" ->
+            update_handicap(
+              player,
+              D.sub(change, changeset.data.handicap_change)
+            )
+        end
+
+        Ecto.Changeset.put_change(changeset, :handicap_change, change)
+
+      true ->
+        changeset
     end
-
-    Ecto.Changeset.put_change(changeset, :handicap_change, change)
   end
 
   defp get_player_and_game(changeset) do
