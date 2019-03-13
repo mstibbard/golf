@@ -21,6 +21,7 @@ defmodule GolfWeb.PageController do
   def awards(conn, _params) do
     now = Date.utc_today()
     attendance = Players.get_attendance(now.year)
-    render(conn, "awards.html", attendance: attendance)
+
+    render(conn, "awards.html", year: now.year, attendance: attendance)
   end
 end

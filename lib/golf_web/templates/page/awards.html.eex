@@ -2,7 +2,7 @@
   <h1 class="title">Awards</h1>
 
   <section class="section">
-    <strong>Showing:</strong> 01-01-2019 to 31-12-2019
+    <strong>Showing:</strong> 01-01-<%= @year %> to 31-12-<%= @year %>
     <br>
     Show last year
   </section>
