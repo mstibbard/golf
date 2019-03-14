@@ -13,14 +13,15 @@ defmodule GolfWeb.PageControllerTest do
     Enum.each(
       [
         get(conn, Routes.page_path(conn, :print)),
-        get(conn, Routes.page_path(conn, :awards)),
+        get(conn, Routes.page_path(conn, :awards))
       ],
       fn conn ->
         assert html_response(conn, 302)
         assert conn.halted
-    end)
+      end
+    )
   end
- 
+
   describe "with a LOGGED-IN user" do
     setup %{conn: conn} do
       user = user_factory()

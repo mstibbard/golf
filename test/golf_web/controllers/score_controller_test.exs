@@ -14,7 +14,8 @@ defmodule GolfWeb.ScoreControllerTest do
       fn conn ->
         assert html_response(conn, 302)
         assert conn.halted
-    end)
+      end
+    )
   end
 
   describe "with a LOGGED-IN user" do
@@ -52,9 +53,10 @@ defmodule GolfWeb.ScoreControllerTest do
     end
 
     test "create score screen only shows players without existing score",
-      %{conn: conn, game: game} do
+         %{conn: conn, game: game} do
       player1 = player_fixture(%{name: "Bobby"})
       player2 = player_fixture(%{name: "Jane"})
+
       score_fixture(%{
         game_id: game.id,
         player_id: player1.id

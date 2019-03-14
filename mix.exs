@@ -51,10 +51,10 @@ defmodule Golf.Mixfile do
       {:plug_cowboy, "~> 1.0"},
       {:ueberauth, "~> 0.4"},
       {:ueberauth_google, "~> 0.5"},
-      {:ex_machina, "~> 2.3", only: :test, override: :true},
+      {:ex_machina, "~> 2.3", only: :test, override: true},
       {:excoveralls, "~> 0.7.0", only: [:test, :dev]},
       {:decimal, "~> 1.0"},
-      {:ecto_sql, "~> 3.0.5"},
+      {:ecto_sql, "~> 3.0.5"}
     ]
   end
 

@@ -54,6 +54,7 @@ defmodule Golf.Scores do
   end
 
   def delete_many_scores([]), do: []
+
   def delete_many_scores([hd | rest]) do
     get_score!(hd.id)
     |> delete_score()
@@ -67,6 +68,15 @@ defmodule Golf.Scores do
     Score
     |> Score.within_date_range(player_id, min, max)
     |> Repo.all()
+  end
+
+  def get_stableford_top_scores(player_id, min, max) do
+    Score
+    |> Score.stableford_within_date_range(player_id, min, max)
+    |> Repo.all()
+    |> Enum.reverse()
+    |> Enum.slice(1..3)
+    |> Enum.reduce(0, fn x, acc -> x + acc end)
   end
 
   defp put_handicap(changeset) do

@@ -62,34 +62,38 @@ defmodule GolfWeb.GameControllerTest do
 
       # Confirm scores recorded against game
       conn = get(conn, Routes.game_path(conn, :show, game.id))
+
       assert String.contains?(
-        conn.resp_body,
-        "#{player1.name}</td>\n            <td>40"
-      )
+               conn.resp_body,
+               "#{player1.name}</td>\n            <td>40"
+             )
+
       assert String.contains?(
-        conn.resp_body,
-        "#{player2.name}</td>\n            <td>37"
-      )
+               conn.resp_body,
+               "#{player2.name}</td>\n            <td>37"
+             )
 
       # Confirm handicaps were amended based on game scores
-      conn = 
+      conn =
         conn
         |> reset_conn_reassign_user(user)
         |> get(Routes.player_path(conn, :index))
+
       assert String.contains?(conn.resp_body, "#{player1.name}</td>\n          <td>19.0")
       assert String.contains?(conn.resp_body, "#{player2.name}</td>\n          <td>9.5")
 
       # Delete the game
-      conn = 
+      conn =
         conn
         |> reset_conn_reassign_user(user)
         |> delete(Routes.game_path(conn, :delete, game.id))
 
       # Confirm the handicaps were reverted
-      conn = 
+      conn =
         conn
         |> reset_conn_reassign_user(user)
         |> get(Routes.player_path(conn, :index))
+
       assert String.contains?(conn.resp_body, "#{player1.name}</td>\n          <td>20.0")
       assert String.contains?(conn.resp_body, "#{player2.name}</td>\n          <td>10.0")
     end

@@ -48,9 +48,20 @@ defmodule Golf.Games.Score do
   end
 
   def within_date_range(query, player_id, min, max) do
-    from s in query,
+    from(s in query,
       join: g in assoc(s, :game),
       where: s.player_id == ^player_id and g.date >= ^min and g.date <= ^max,
       select: sum(s.points)
+    )
+  end
+
+  def stableford_within_date_range(query, player_id, min, max) do
+    from(s in query,
+      join: g in assoc(s, :game),
+      where:
+        s.player_id == ^player_id and g.date >= ^min and g.date <= ^max and g.type == "Stableford",
+      select: s.score,
+      order_by: [desc: s.score]
+    )
   end
 end

@@ -20,7 +20,7 @@ defmodule Golf.Players.Player do
   end
 
   def active_players(query) do
-    from(p in query, where: p.active == :true)
+    from(p in query, where: p.active == true)
   end
 
   def players_alphabetically(query) do
@@ -32,19 +32,22 @@ defmodule Golf.Players.Player do
   end
 
   def existing_score(query, game_id) do
-    from p in query,
+    from(p in query,
       join: s in assoc(p, :score),
       where: s.game_id == ^game_id
+    )
   end
 
   def remove_existing(query, to_remove) do
-    from p in query,
+    from(p in query,
       select: p,
       except: ^to_remove
+    )
   end
 
   def handicap_within_range(query, min, max) do
-    from p in query,
+    from(p in query,
       where: p.handicap >= ^min and p.handicap <= ^max
+    )
   end
 end

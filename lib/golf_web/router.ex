@@ -17,13 +17,13 @@ defmodule GolfWeb.Router do
   scope "/manage", GolfWeb do
     pipe_through([:browser, :authenticate_user])
 
-    resources "/players", PlayerController, except: [:delete]
+    resources("/players", PlayerController, except: [:delete])
 
     get("/print", PageController, :print)
     get("/awards", PageController, :awards)
 
     resources("/games", GameController)
-    resources "/games/score", ScoreController, except: [:new]
+    resources("/games/score", ScoreController, except: [:new])
     get("/games/score/new/:id", ScoreController, :new)
     post("/games/score/create_many", ScoreController, :create_many)
   end

@@ -85,6 +85,7 @@ defmodule GolfWeb.ScoreController do
   end
 
   defp create_scores([]), do: []
+
   defp create_scores([hd | tl]) do
     Scores.create_score(hd)
     create_scores(tl)

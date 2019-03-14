@@ -16,7 +16,6 @@ defmodule GolfWeb.DivisionsTest do
       conn = get(conn, Routes.page_path(conn, :index))
       assert String.contains?(conn.resp_body, "#{p1.name}</td>\n            <td>32")
       assert String.contains?(conn.resp_body, "#{p2.name}</td>\n            <td>31")
-    end    
+    end
   end
 end
-

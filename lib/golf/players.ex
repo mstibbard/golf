@@ -44,18 +44,18 @@ defmodule Golf.Players do
   end
 
   def players_without_score_for_game_id(game_id) do
-    base = 
+    base =
       Player
       |> Player.active_players()
 
-    to_remove = 
+    to_remove =
       base
       |> Player.existing_score(game_id)
 
     base
     |> Player.remove_existing(to_remove)
     |> Player.players_alphabetically_sub()
-    |> Repo.all() 
+    |> Repo.all()
   end
 
   def get_division(min, max) do
@@ -64,7 +64,7 @@ defmodule Golf.Players do
     |> Player.handicap_within_range(min, max)
     |> Repo.all()
     |> round_handicaps()
-    |> Enum.sort_by(&(&1.name))
+    |> Enum.sort_by(& &1.name)
   end
 
   def get_attendance(year) do
@@ -73,11 +73,21 @@ defmodule Golf.Players do
 
     list_active_players()
     |> produce_attendance_map(min, max)
-    |> Enum.sort_by(&(&1.points), &>=/2)
+    |> Enum.sort_by(& &1.points, &>=/2)
+  end
+
+  def get_stableford(year) do
+    {:ok, min} = Date.new(year, 1, 1)
+    {:ok, max} = Date.new(year, 12, 31)
+
+    list_active_players()
+    |> produce_stableford_map(min, max)
+    |> Enum.sort_by(& &1.stableford, &>=/2)
   end
 
   defp round_handicaps(list), do: round_handicaps(list, [])
   defp round_handicaps([], acc), do: acc
+
   defp round_handicaps([player | rest], acc) do
     vals = %{
       handicap: D.round(player.handicap, 0, :half_up),
@@ -90,14 +100,34 @@ defmodule Golf.Players do
   defp produce_attendance_map(list, min, max) do
     produce_attendance_map(list, min, max, [])
   end
+
   defp produce_attendance_map([], _min, _max, acc), do: acc
+
   defp produce_attendance_map([player | rest], min, max, acc) do
     vals = %{
-      id: player.id, 
+      id: player.id,
       name: player.name,
       points: List.first(Scores.sum_player_scores_in_range!(player.id, min, max))
     }
 
     produce_attendance_map(rest, min, max, [vals | acc])
+  end
+
+  defp produce_stableford_map(list, min, max) do
+    produce_stableford_map(list, min, max, [])
+  end
+
+  defp produce_stableford_map([], _min, _max, acc), do: acc
+
+  defp produce_stableford_map([player | rest], min, max, acc) do
+    result = Scores.get_stableford_top_scores(player.id, min, max)
+
+    vals = %{
+      id: player.id,
+      name: player.name,
+      stableford: result
+    }
+
+    produce_stableford_map(rest, min, max, [vals | acc])
   end
 end

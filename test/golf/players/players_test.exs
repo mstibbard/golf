@@ -65,5 +65,28 @@ defmodule Golf.PlayersTest do
       assert Enum.member?(Players.get_attendance(2019), player1_attendance)
       assert Enum.member?(Players.get_attendance(2019), player2_attendance)
     end
+
+    test "get_stableford/1 returns list of players and results" do
+      player1 = player_fixture(%{name: "El"})
+      player2 = player_fixture(%{name: "Jo"})
+      game1 = game_fixture(%{date: ~D[2019-01-02]})
+      game2 = game_fixture(%{date: ~D[2019-02-03]})
+      game3 = game_fixture(%{date: ~D[2019-03-04]})
+      game4 = game_fixture(%{date: ~D[2019-04-05]})
+      score_fixture(%{game_id: game1.id, player_id: player1.id, score: 41})
+      score_fixture(%{game_id: game4.id, player_id: player1.id, score: 39})
+      score_fixture(%{game_id: game2.id, player_id: player1.id, score: 36})
+      score_fixture(%{game_id: game3.id, player_id: player1.id, score: 34})
+      score_fixture(%{game_id: game1.id, player_id: player2.id, score: 41})
+      score_fixture(%{game_id: game4.id, player_id: player2.id, score: 37})
+      score_fixture(%{game_id: game3.id, player_id: player2.id, score: 36})
+      score_fixture(%{game_id: game2.id, player_id: player2.id, score: 30})
+
+      player1_stableford = %{name: player1.name, id: player1.id, stableford: 116}
+      player2_stableford = %{name: player2.name, id: player2.id, stableford: 114}
+
+      assert Enum.member?(Players.get_stableford(2019), player1_stableford)
+      assert Enum.member?(Players.get_stableford(2019), player2_stableford)
+    end
   end
 end

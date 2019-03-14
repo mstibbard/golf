@@ -7,7 +7,14 @@ defmodule Golf.ScoresTest do
   alias Decimal, as: D
 
   describe "scores" do
-    @valid_attrs %{score: 36, handicap: 0, handicap_change: 0.0, points: 1, player_id: 0, game_id: 0}
+    @valid_attrs %{
+      score: 36,
+      handicap: 0,
+      handicap_change: 0.0,
+      points: 1,
+      player_id: 0,
+      game_id: 0
+    }
     @update_attrs %{score: 40, handicap_change: 0.0}
     @invalid_attrs %{score: -30, handicap_change: nil, player_id: nil, game_id: nil}
 
@@ -19,20 +26,24 @@ defmodule Golf.ScoresTest do
     end
 
     test "list_scores/0 lists all scores", prep do
-      score = score_fixture(%{
-        game_id: prep.game_id,
-        player_id: prep.player_id,
-        handicap: prep.handicap
-      })
+      score =
+        score_fixture(%{
+          game_id: prep.game_id,
+          player_id: prep.player_id,
+          handicap: prep.handicap
+        })
+
       assert Scores.list_scores() == [score]
     end
 
     test "get_score!/1 with valid id returns the score", prep do
-      score = score_fixture(%{
-        game_id: prep.game_id,
-        player_id: prep.player_id,
-        handicap: prep.handicap
-      })
+      score =
+        score_fixture(%{
+          game_id: prep.game_id,
+          player_id: prep.player_id,
+          handicap: prep.handicap
+        })
+
       assert Scores.get_score!(score.id) == score
     end
 
@@ -59,11 +70,12 @@ defmodule Golf.ScoresTest do
     end
 
     test "update_score/2 with valid data updates the score", prep do
-      score = score_fixture(%{
-        game_id: prep.game_id,
-        player_id: prep.player_id,
-        handicap: prep.handicap
-      })
+      score =
+        score_fixture(%{
+          game_id: prep.game_id,
+          player_id: prep.player_id,
+          handicap: prep.handicap
+        })
 
       prep = %{player_id: score.player_id, game_id: score.game_id}
 
@@ -81,22 +93,24 @@ defmodule Golf.ScoresTest do
     end
 
     test "update_score/2 with invalid data returns error changeset", prep do
-      score = score_fixture(%{
-        game_id: prep.game_id,
-        player_id: prep.player_id,
-        handicap: prep.handicap
-      })
+      score =
+        score_fixture(%{
+          game_id: prep.game_id,
+          player_id: prep.player_id,
+          handicap: prep.handicap
+        })
 
       assert {:error, %Ecto.Changeset{}} = Scores.update_score(score, @invalid_attrs)
       assert score == Scores.get_score!(score.id)
     end
 
     test "delete_score/1 deletes the score and reverts handicap", prep do
-      score = score_fixture(%{
-        game_id: prep.game_id,
-        player_id: prep.player_id,
-        handicap: prep.handicap
-      })
+      score =
+        score_fixture(%{
+          game_id: prep.game_id,
+          player_id: prep.player_id,
+          handicap: prep.handicap
+        })
 
       player = Players.get_player!(score.player_id)
       assert player.handicap == D.new("10.3")
@@ -109,11 +123,13 @@ defmodule Golf.ScoresTest do
     end
 
     test "change_score/1 returns a score changeset", prep do
-      score = score_fixture(%{
-        game_id: prep.game_id,
-        player_id: prep.player_id,
-        handicap: prep.handicap
-      })
+      score =
+        score_fixture(%{
+          game_id: prep.game_id,
+          player_id: prep.player_id,
+          handicap: prep.handicap
+        })
+
       assert %Ecto.Changeset{} = Scores.change_score(score)
     end
   end
