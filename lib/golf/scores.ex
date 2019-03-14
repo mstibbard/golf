@@ -36,6 +36,7 @@ defmodule Golf.Scores do
     |> Score.changeset(attrs)
     |> put_handicap
     |> put_handicap_change("create")
+    |> put_new_handicap()
     |> Repo.insert()
   end
 
@@ -43,6 +44,7 @@ defmodule Golf.Scores do
     score
     |> Score.changeset(attrs)
     |> put_handicap_change("update")
+    |> put_new_handicap()
     |> Repo.update()
   end
 
@@ -100,21 +102,51 @@ defmodule Golf.Scores do
           action == "create" ->
             update_handicap(player, change)
 
+            Ecto.Changeset.put_change(changeset, :handicap_change, change)
+
           action == "update" ->
             update_handicap(
               player,
               D.sub(change, changeset.data.handicap_change)
             )
-        end
 
-        Ecto.Changeset.put_change(changeset, :handicap_change, change)
+            Ecto.Changeset.put_change(changeset, :handicap_change, change)
+        end
 
       Map.has_key?(changeset.changes, :handicap_change) ->
         update_handicap(
           player,
           D.sub(changeset.changes.handicap_change, changeset.data.handicap_change)
         )
+
         changeset
+
+      true ->
+        changeset
+    end
+  end
+
+  defp put_new_handicap(changeset) do
+    has_change? = Map.has_key?(changeset.changes, :handicap_change)
+    cond do
+      has_change? ->
+        check = Map.has_key?(changeset.changes, :handicap)
+
+        cond do
+          check == true ->
+            Ecto.Changeset.put_change(
+              changeset,
+              :new_handicap,
+              D.add(changeset.changes.handicap, changeset.changes.handicap_change)
+            )
+
+          check == false ->
+            Ecto.Changeset.put_change(
+              changeset,
+              :new_handicap,
+              D.add(changeset.data.handicap, changeset.changes.handicap_change)
+            )
+        end
 
       true ->
         changeset

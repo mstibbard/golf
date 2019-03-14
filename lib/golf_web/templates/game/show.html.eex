@@ -32,6 +32,7 @@
             <th>Score</th>
             <th>Handicap</th>
             <th>Handicap Change</th>
+            <th>New Handicap</th>
             <th>Points</th>
             <th></th>
             <th></th>
@@ -46,6 +47,7 @@
             <td><%= score.score %></td>
             <td><%= score.handicap %></td>
             <td><%= score.handicap_change %></td>
+            <td><%= score.new_handicap %></td>
             <td><%= score.points %></td>
             <td><%= link "Show", to: Routes.score_path(@conn, :show, score) %></td>
             <td><%= link "Edit", to: Routes.score_path(@conn, :edit, score) %></td>

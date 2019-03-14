@@ -11,12 +11,19 @@ defmodule Golf.ScoresTest do
       score: 36,
       handicap: 0,
       handicap_change: 0.0,
+      new_handicap: 0,
       points: 1,
       player_id: 0,
       game_id: 0
     }
-    @update_attrs %{score: 40, handicap_change: 0.0}
-    @invalid_attrs %{score: -30, handicap_change: nil, player_id: nil, game_id: nil}
+    @update_attrs %{score: 40, handicap_change: 0.0, new_handicap: 0.0}
+    @invalid_attrs %{
+      score: -30,
+      handicap_change: nil,
+      player_id: nil,
+      game_id: nil,
+      new_handicap: nil
+    }
 
     setup do
       %{id: game_id} = game_fixture()
@@ -56,6 +63,7 @@ defmodule Golf.ScoresTest do
       assert score.score == 36
       assert score.handicap == D.new("10.0")
       assert score.handicap_change == D.new("0.3")
+      assert score.new_handicap == D.new("10.3")
 
       player = Players.get_player!(score.player_id)
       assert player.handicap == D.new("10.3")
@@ -87,6 +95,7 @@ defmodule Golf.ScoresTest do
       assert %Score{} = score
       assert score.score == 40
       assert score.handicap_change == D.new("-1.0")
+      assert score.new_handicap == D.new("9.0")
 
       player = Players.get_player!(score.player_id)
       assert player.handicap == D.new("9.0")
@@ -117,10 +126,10 @@ defmodule Golf.ScoresTest do
       assert {:ok, score} = Scores.update_score(score, attrs)
       assert %Score{} = score
       assert score.handicap_change == D.new("-3.0")
+      assert score.new_handicap == D.new("7.0")
 
       player = Players.get_player!(score.player_id)
       assert player.handicap == D.new("7.0")
-
     end
 
     test "delete_score/1 deletes the score and reverts handicap", prep do

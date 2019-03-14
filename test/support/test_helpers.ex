@@ -47,6 +47,7 @@ defmodule Golf.TestHelpers do
         score: 36,
         handicap: 20.0,
         handicap_change: 0.0,
+        new_handicap: 20.0,
         points: 1,
         player_id: 1,
         game_id: 1

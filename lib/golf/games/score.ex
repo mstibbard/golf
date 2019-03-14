@@ -7,6 +7,7 @@ defmodule Golf.Games.Score do
     field(:score, :integer)
     field(:handicap, :decimal)
     field(:handicap_change, :decimal)
+    field(:new_handicap, :decimal)
     field(:points, :integer)
 
     belongs_to(:player, Golf.Players.Player)
@@ -18,11 +19,20 @@ defmodule Golf.Games.Score do
   @doc false
   def changeset(score, attrs) do
     score
-    |> cast(attrs, [:score, :handicap, :handicap_change, :player_id, :game_id, :points])
+    |> cast(attrs, [
+      :score,
+      :handicap,
+      :handicap_change,
+      :new_handicap,
+      :player_id,
+      :game_id,
+      :points
+    ])
     |> validate_required([
       :score,
       :handicap,
       :handicap_change,
+      :new_handicap,
       :player_id,
       :game_id,
       :points

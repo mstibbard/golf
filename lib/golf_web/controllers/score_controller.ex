@@ -70,8 +70,9 @@ defmodule GolfWeb.ScoreController do
         player_id: x,
         game_id: game_id,
         score: String.to_integer(y),
-        handicap: 0,
+        handicap: 0.0,
         handicap_change: 0.0,
+        new_handicap: 0.0,
         points: 1
       }
     end)
