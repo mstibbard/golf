@@ -55,13 +55,11 @@ defmodule Golf.Scores do
     Repo.delete(score)
   end
 
-  def delete_many_scores([]), do: []
-
-  def delete_many_scores([hd | rest]) do
-    get_score!(hd.id)
-    |> delete_score()
-
-    delete_many_scores(rest)
+  def delete_many_scores(scores) do
+    Enum.each(scores, fn x ->
+      get_score!(x.id)
+      |> delete_score()
+    end)
   end
 
   def change_score(%Score{} = score), do: Score.changeset(score, %{})
