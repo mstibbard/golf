@@ -72,7 +72,7 @@ defmodule Golf.Players do
     {:ok, max} = Date.new(year, 12, 31)
 
     list_active_players()
-    |> produce_attendance_map(min, max)
+    |> produce_attendance_map(min, max, [])
     |> Enum.sort_by(& &1.points, &>=/2)
   end
 
@@ -81,24 +81,14 @@ defmodule Golf.Players do
     {:ok, max} = Date.new(year, 12, 31)
 
     list_active_players()
-    |> produce_stableford_map(min, max)
+    |> produce_stableford_map(min, max, [])
     |> Enum.sort_by(& &1.stableford, &>=/2)
   end
 
-  defp round_handicaps(list), do: round_handicaps(list, [])
-  defp round_handicaps([], acc), do: acc
-
-  defp round_handicaps([player | rest], acc) do
-    vals = %{
-      handicap: D.round(player.handicap, 0, :half_up),
-      name: player.name
-    }
-
-    round_handicaps(rest, [vals | acc])
-  end
-
-  defp produce_attendance_map(list, min, max) do
-    produce_attendance_map(list, min, max, [])
+  defp round_handicaps(list) do
+    Enum.reduce(list, [], fn x, acc ->
+      [%{handicap: D.round(x.handicap, 0, :half_up), name: x.name} | acc]
+    end)
   end
 
   defp produce_attendance_map([], _min, _max, acc), do: acc
@@ -111,10 +101,6 @@ defmodule Golf.Players do
     }
 
     produce_attendance_map(rest, min, max, [vals | acc])
-  end
-
-  defp produce_stableford_map(list, min, max) do
-    produce_stableford_map(list, min, max, [])
   end
 
   defp produce_stableford_map([], _min, _max, acc), do: acc
