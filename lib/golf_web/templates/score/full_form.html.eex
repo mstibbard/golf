@@ -18,6 +18,12 @@
   </div><br>
 
   <div class="form-group">
+    <%= label f, :handicap_change, class: "label" %>
+    <%= number_input f, :handicap_change, placeholder: 0.0, step: 0.1 %>
+    <%= error_tag f, :handicap_change %>
+  </div><br>
+
+  <div class="form-group">
     <%= submit "Submit", class: "button is-primary" %>
   </div>
 <% end %><br>

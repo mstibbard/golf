@@ -109,6 +109,13 @@ defmodule Golf.Scores do
 
         Ecto.Changeset.put_change(changeset, :handicap_change, change)
 
+      Map.has_key?(changeset.changes, :handicap_change) ->
+        update_handicap(
+          player,
+          D.sub(changeset.changes.handicap_change, changeset.data.handicap_change)
+        )
+        changeset
+
       true ->
         changeset
     end

@@ -104,6 +104,25 @@ defmodule Golf.ScoresTest do
       assert score == Scores.get_score!(score.id)
     end
 
+    test "update_score/2 with handicap_change but no score updates correctly", prep do
+      score =
+        score_fixture(%{
+          game_id: prep.game_id,
+          player_id: prep.player_id,
+          handicap: prep.handicap
+        })
+
+      attrs = %{points: 4, handicap_change: -3.0}
+
+      assert {:ok, score} = Scores.update_score(score, attrs)
+      assert %Score{} = score
+      assert score.handicap_change == D.new("-3.0")
+
+      player = Players.get_player!(score.player_id)
+      assert player.handicap == D.new("7.0")
+
+    end
+
     test "delete_score/1 deletes the score and reverts handicap", prep do
       score =
         score_fixture(%{
