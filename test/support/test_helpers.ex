@@ -41,18 +41,15 @@ defmodule Golf.TestHelpers do
   end
 
   def score_fixture(attrs \\ %{}) do
-    game = game_fixture()
-    player = player_fixture()
-
     {:ok, score} =
       attrs
       |> Enum.into(%{
         score: 36,
-        handicap: player.handicap,
+        handicap: 20.0,
         handicap_change: 0.0,
         points: 1,
-        player_id: player.id,
-        game_id: game.id
+        player_id: 1,
+        game_id: 1
       })
       |> Scores.create_score()
 

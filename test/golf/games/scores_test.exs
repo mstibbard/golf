@@ -18,13 +18,21 @@ defmodule Golf.ScoresTest do
       {:ok, %{game_id: game_id, player_id: player_id, handicap: handicap}}
     end
 
-    test "list_scores/0 lists all scores" do
-      score = score_fixture()
+    test "list_scores/0 lists all scores", prep do
+      score = score_fixture(%{
+        game_id: prep.game_id,
+        player_id: prep.player_id,
+        handicap: prep.handicap
+      })
       assert Scores.list_scores() == [score]
     end
 
-    test "get_score!/1 with valid id returns the score" do
-      score = score_fixture()
+    test "get_score!/1 with valid id returns the score", prep do
+      score = score_fixture(%{
+        game_id: prep.game_id,
+        player_id: prep.player_id,
+        handicap: prep.handicap
+      })
       assert Scores.get_score!(score.id) == score
     end
 
@@ -50,8 +58,12 @@ defmodule Golf.ScoresTest do
       assert {:error, %Ecto.Changeset{}} = Scores.create_score(attrs)
     end
 
-    test "update_score/2 with valid data updates the score" do
-      score = score_fixture()
+    test "update_score/2 with valid data updates the score", prep do
+      score = score_fixture(%{
+        game_id: prep.game_id,
+        player_id: prep.player_id,
+        handicap: prep.handicap
+      })
 
       prep = %{player_id: score.player_id, game_id: score.game_id}
 
@@ -68,15 +80,23 @@ defmodule Golf.ScoresTest do
       assert player.handicap == D.new("9.0")
     end
 
-    test "update_score/2 with invalid data returns error changeset" do
-      score = score_fixture()
+    test "update_score/2 with invalid data returns error changeset", prep do
+      score = score_fixture(%{
+        game_id: prep.game_id,
+        player_id: prep.player_id,
+        handicap: prep.handicap
+      })
 
       assert {:error, %Ecto.Changeset{}} = Scores.update_score(score, @invalid_attrs)
       assert score == Scores.get_score!(score.id)
     end
 
-    test "delete_score/1 deletes the score and reverts handicap" do
-      score = score_fixture()
+    test "delete_score/1 deletes the score and reverts handicap", prep do
+      score = score_fixture(%{
+        game_id: prep.game_id,
+        player_id: prep.player_id,
+        handicap: prep.handicap
+      })
 
       player = Players.get_player!(score.player_id)
       assert player.handicap == D.new("10.3")
@@ -88,8 +108,12 @@ defmodule Golf.ScoresTest do
       assert player.handicap == D.new("10.0")
     end
 
-    test "change_score/1 returns a score changeset" do
-      score = score_fixture()
+    test "change_score/1 returns a score changeset", prep do
+      score = score_fixture(%{
+        game_id: prep.game_id,
+        player_id: prep.player_id,
+        handicap: prep.handicap
+      })
       assert %Ecto.Changeset{} = Scores.change_score(score)
     end
   end
