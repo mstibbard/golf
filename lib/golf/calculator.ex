@@ -14,7 +14,7 @@ defmodule Golf.Calculator do
   @inc "0.3"
   @dec1 "-0.5"
   @dec2 "-1.0"
-  @dec3 "-1.5"
+  @dec3 "-2.0"
   @max "45.0"
 
   def calculate_change(score, type, current_handicap) do
