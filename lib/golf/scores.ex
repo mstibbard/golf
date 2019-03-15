@@ -79,7 +79,7 @@ defmodule Golf.Scores do
   defp populate_changeset(changeset) do
     %{player: player, game: game} = get_player_and_game(changeset)
 
-    score = get_score_from_changeset(changeset)
+    score = Ecto.Changeset.get_change(changeset, :score)
 
     changeset
     |> put_handicap(player.handicap)
@@ -88,23 +88,13 @@ defmodule Golf.Scores do
     |> update_player_table(player)
   end
 
-  defp get_score_from_changeset(changeset) do
-    cond do
-      Map.has_key?(changeset.changes, :score) ->
-        changeset.changes.score
-
-      true ->
-        nil
-    end
-  end
-
   defp put_handicap(changeset, handicap) do
     cond do
-      changeset.data.handicap != nil ->
-        Ecto.Changeset.put_change(changeset, :handicap, changeset.data.handicap)
+      changeset.data.handicap == nil ->
+        Ecto.Changeset.put_change(changeset, :handicap, handicap)
 
       true ->
-        Ecto.Changeset.put_change(changeset, :handicap, handicap)
+        Ecto.Changeset.put_change(changeset, :handicap, changeset.data.handicap)
     end
   end
 
