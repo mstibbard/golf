@@ -55,8 +55,8 @@ defmodule GolfWeb.ScoreController do
     |> Map.delete("game_id")
     |> Map.delete("_csrf_token")
     |> prepare_for_changeset(game_id)
-    |> remove_scores_of_zero()
-    |> create_scores()
+    |> Enum.filter(fn x -> x.score > 0 end)
+    |> Enum.each(fn x -> Scores.create_score(x) end)
 
     conn
     |> put_flash(:info, "All scores created successfully.")
@@ -76,19 +76,5 @@ defmodule GolfWeb.ScoreController do
         points: 1
       }
     end)
-  end
-
-  defp remove_scores_of_zero(scores) do
-    scores
-    |> Enum.filter(fn x ->
-      x.score > 0
-    end)
-  end
-
-  defp create_scores([]), do: []
-
-  defp create_scores([hd | tl]) do
-    Scores.create_score(hd)
-    create_scores(tl)
   end
 end
