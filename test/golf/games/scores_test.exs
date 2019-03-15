@@ -125,6 +125,7 @@ defmodule Golf.ScoresTest do
 
       assert {:ok, score} = Scores.update_score(score, attrs)
       assert %Score{} = score
+      assert score.handicap == D.new("10.0")
       assert score.handicap_change == D.new("-3.0")
       assert score.new_handicap == D.new("7.0")
 

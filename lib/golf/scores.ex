@@ -34,23 +34,20 @@ defmodule Golf.Scores do
   def create_score(attrs \\ %{}) do
     %Score{}
     |> Score.changeset(attrs)
-    |> put_handicap
-    |> put_handicap_change("create")
-    |> put_new_handicap()
+    |> populate_changeset()
     |> Repo.insert()
   end
 
   def update_score(%Score{} = score, attrs) do
     score
     |> Score.changeset(attrs)
-    |> put_handicap_change("update")
-    |> put_new_handicap()
+    |> populate_changeset()
     |> Repo.update()
   end
 
   def delete_score(%Score{} = score) do
     Players.get_player!(score.player_id)
-    |> update_handicap(D.minus(score.handicap_change))
+    |> revert_handicap(D.minus(score.handicap_change))
 
     Repo.delete(score)
   end
@@ -79,70 +76,64 @@ defmodule Golf.Scores do
     |> Enum.reduce(0, fn x, acc -> x + acc end)
   end
 
-  defp put_handicap(changeset) do
-    player = Players.get_player!(changeset.changes.player_id)
-    Ecto.Changeset.put_change(changeset, :handicap, player.handicap)
-  end
-
-  defp put_handicap_change(changeset, action) do
+  defp populate_changeset(changeset) do
     %{player: player, game: game} = get_player_and_game(changeset)
 
+    score = get_score_from_changeset(changeset)
+
+    changeset
+    |> put_handicap(player.handicap)
+    |> put_handicap_change(score, player.handicap, game.type)
+    |> put_new_handicap()
+    |> update_player_table(player)
+  end
+
+  defp get_score_from_changeset(changeset) do
     cond do
       Map.has_key?(changeset.changes, :score) ->
-        change =
-          Calculator.calculate_change(
-            changeset.changes.score,
-            game.type,
-            player.handicap
-          )
-
-        cond do
-          action == "create" ->
-            update_handicap(player, change)
-
-            Ecto.Changeset.put_change(changeset, :handicap_change, change)
-
-          action == "update" ->
-            update_handicap(
-              player,
-              D.sub(change, changeset.data.handicap_change)
-            )
-
-            Ecto.Changeset.put_change(changeset, :handicap_change, change)
-        end
-
-      Map.has_key?(changeset.changes, :handicap_change) ->
-        update_handicap(
-          player,
-          D.sub(changeset.changes.handicap_change, changeset.data.handicap_change)
-        )
-
-        changeset
+        changeset.changes.score
 
       true ->
-        changeset
+        nil
     end
   end
 
-  defp put_new_handicap(changeset) do
-    has_change? = Map.has_key?(changeset.changes, :handicap_change)
+  defp put_handicap(changeset, handicap) do
     cond do
-      has_change? ->
-        check = Map.has_key?(changeset.changes, :handicap)
+      changeset.data.handicap != nil ->
+        Ecto.Changeset.put_change(changeset, :handicap, changeset.data.handicap)
 
+      true ->
+        Ecto.Changeset.put_change(changeset, :handicap, handicap)
+    end
+  end
+
+  defp put_handicap_change(changeset, nil, _handicap, _game_type), do: changeset
+
+  defp put_handicap_change(changeset, score, handicap, game_type) do
+    Ecto.Changeset.put_change(
+      changeset,
+      :handicap_change,
+      Calculator.calculate_change(score, game_type, handicap)
+    )
+  end
+
+  defp put_new_handicap(changeset) do
+    cond do
+      Map.has_key?(changeset.changes, :handicap_change) ->
         cond do
-          check == true ->
-            Ecto.Changeset.put_change(
-              changeset,
-              :new_handicap,
-              D.add(changeset.changes.handicap, changeset.changes.handicap_change)
-            )
-
-          check == false ->
+          changeset.data.handicap_change > D.new("0.0") ->
             Ecto.Changeset.put_change(
               changeset,
               :new_handicap,
               D.add(changeset.data.handicap, changeset.changes.handicap_change)
+            )
+
+          true ->
+            Ecto.Changeset.put_change(
+              changeset,
+              :new_handicap,
+              D.add(changeset.changes.handicap, changeset.changes.handicap_change)
             )
         end
 
@@ -152,24 +143,27 @@ defmodule Golf.Scores do
   end
 
   defp get_player_and_game(changeset) do
-    check = Map.has_key?(changeset.changes, :player_id)
+    {_, player_id} = Ecto.Changeset.fetch_field(changeset, :player_id)
+    {_, game_id} = Ecto.Changeset.fetch_field(changeset, :game_id)
 
+    player = Players.get_player!(player_id)
+    game = Games.get_game!(game_id)
+
+    %{player: player, game: game}
+  end
+
+  defp update_player_table(changeset, player) do
     cond do
-      check == true ->
-        player = Players.get_player!(changeset.changes.player_id)
-        game = Games.get_game!(changeset.changes.game_id)
+      Map.has_key?(changeset.changes, :new_handicap) ->
+        Players.update_player(player, %{handicap: changeset.changes.new_handicap})
+        changeset
 
-        %{player: player, game: game}
-
-      check == false ->
-        player = Players.get_player!(changeset.data.player_id)
-        game = Games.get_game!(changeset.data.game_id)
-
-        %{player: player, game: game}
+      true ->
+        changeset
     end
   end
 
-  defp update_handicap(player, change) do
+  defp revert_handicap(player, change) do
     attrs = %{handicap: D.add(player.handicap, change)}
     Players.update_player(player, attrs)
   end
