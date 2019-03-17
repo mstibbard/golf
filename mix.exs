@@ -54,7 +54,8 @@ defmodule Golf.Mixfile do
       {:ex_machina, "~> 2.3", only: :test, override: true},
       {:excoveralls, "~> 0.7.0", only: [:test, :dev]},
       {:decimal, "~> 1.0"},
-      {:ecto_sql, "~> 3.0.5"}
+      {:ecto_sql, "~> 3.0.5"},
+      {:distillery, "~> 2.0"},
     ]
   end
 
