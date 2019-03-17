@@ -1,12 +1,7 @@
 defmodule GolfWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :golf
 
-  socket(
-    "/socket",
-    GolfWeb.UserSocket,
-    websocket: [timeout: 45_000],
-    longpoll: false 
-  )
+  socket("/socket", GolfWeb.UserSocket)
 
   # Serve at "/" the static files from "priv/static" directory.
   #
